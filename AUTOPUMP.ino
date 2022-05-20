@@ -30,7 +30,7 @@ float tinggi,cm,temp,kosong,full;
 long duration; 
 int distance,baca;
 int SISTEM=1,buttonMenuOnline;  //Virtual Pin
-bool isConnecteds,tryReconnect;
+bool isConnecteds,tryReconnect=false;
 WidgetLCD lcd(V1);
 
 void setup() {
@@ -166,8 +166,8 @@ void SetTinggi(){
  }
  if(digitalRead(buttonPop)==LOW){
   tinggi-=1.0;
-  if(tinggi<25){
-    tinggi=25;
+  if(tinggi<30){
+    tinggi=30;
     }
   delay(1);
  }
@@ -206,7 +206,7 @@ BLYNK_WRITE(V0){
   if(buttonMenuOnline==1){
   int Value=param.asInt();
   tinggi=Value;
-  if(tinggi<25)tinggi=25;
+  if(tinggi<30)tinggi=30;
   }
 }
 void SetTinggiOnline(){
@@ -312,6 +312,7 @@ void Condition(){
       }
       delay(1000);
       lcd1.clear();
+      tryReconnect=false;
   }
   if(persen<=20)
   {
@@ -385,7 +386,7 @@ else if(persen>=100)
   flag=EEPROM.get(addr2,flagVal);
   
 }
-else if(persen>=105)
+else if(persen>=105||cm<3)
 {
   if(flag1!=5){
     lcd1.clear();
@@ -402,8 +403,7 @@ else if(persen>=105)
   lcd.print(0,1,"atau Set Tinggi");
   EEPROM.put(addr2,flagVal=0);
   flag=EEPROM.get(addr2,flagVal);
-  digitalWrite(ledStatusAndRelay,LOW);
-  
+  digitalWrite(ledStatusAndRelay,LOW); 
 }
 EEPROM.end(); 
 if(flag==0){
