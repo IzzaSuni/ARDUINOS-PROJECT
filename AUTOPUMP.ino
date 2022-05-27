@@ -258,7 +258,7 @@ EEPROM.end();
 }
 void ShowData(){
  if(flag1!=5){
-  
+
  lcd1.setCursor(0,0);
  lcd1.print(persen);
  lcd1.print("%");
@@ -303,27 +303,24 @@ void Condition(){
     digitalWrite(ledStatusAndRelay,LOW);
     Blynk.connect(3333);
     if(Blynk.connect()==true){
-      lcd1.setCursor(0,1);
-  lcd1.print("SUKSES");
-      }
-        else if(Blynk.connect()==false){
-        lcd1.setCursor(0,1);
-  lcd1.print("GAGAL");      
-      }
-      delay(1000);
-      lcd1.clear();
-      tryReconnect=false;
+    lcd1.setCursor(0,1);
+    lcd1.print("SUKSES");
+    }
+    else if(Blynk.connect()==false){
+    lcd1.setCursor(0,1);
+    lcd1.print("GAGAL");      
+    }
+    delay(1000);
+    lcd1.clear();
+    tryReconnect=false;
   }
-  if(persen<=20)
-  {
-  if(flag1!=1){
-   if(flag==2){goto A;}
-   SoundOn();
+  
+ if(persen<=20){
+  if(flag1!=1||flag1!=2){
    lcd1.clear();
    lcd.clear();
    flag1=1;
   }
-  A:
   digitalWrite(ledStatusAndRelay,HIGH);
   lcd1.setCursor(5,0);
   lcd1.print("SISTEM ON");
@@ -334,13 +331,13 @@ void Condition(){
   EEPROM.put(addr2,flagVal=1);
   flag=EEPROM.get(addr2,flagVal);
   }
-  else if(persen>20&&persen<100&&flag==1)
-  {
+  else if(persen>20&&persen<100&&flag==1){
   if(flag1!=2){
     lcd1.clear();
     lcd.clear();
+    flag1=2;
    }
-  flag1=2;
+
   digitalWrite(ledStatusAndRelay,HIGH);
   lcd1.setCursor(5,0);
   lcd1.print("SISTEM ON");
@@ -351,13 +348,13 @@ void Condition(){
   digitalWrite(ledStatusAndRelay,HIGH);
   
   }
-  else if(persen>20&&persen<100&&flag==0)
-  {
+  else if(persen>20&&persen<100&&flag==0){
     if(flag1!=3){
     lcd1.clear();
     lcd.clear();
-   }
     flag1=3;
+   }
+    
     digitalWrite(ledStatusAndRelay,LOW);
      lcd1.setCursor(5,0);
     lcd1.print("SISTEM OFF");
@@ -365,16 +362,15 @@ void Condition(){
     lcd1.setCursor(3,1);
     lcd1.print("AIR TERSEDIA");
     lcd.print(3,1,"AIR TERSEDIA");
-  }
-  
-else if(persen>=100)
-{
-  if(flag1!=4){
+  }  
+else if(persen>=100){
+  if(flag1!=4||flag1!=3||flag1!=2){
     lcd1.clear();
     lcd.clear(); 
   SoundOff();
-  }
   flag1=4;
+  }
+  
   digitalWrite(ledStatusAndRelay,LOW);
   lcd1.setCursor(5,0);
   lcd1.print("SISTEM OFF");
@@ -386,8 +382,7 @@ else if(persen>=100)
   flag=EEPROM.get(addr2,flagVal);
   
 }
-else if(persen>=105||cm<3)
-{
+else if(persen>=105||cm<3){
   if(flag1!=5){
     lcd1.clear();
     lcd.clear(); 
